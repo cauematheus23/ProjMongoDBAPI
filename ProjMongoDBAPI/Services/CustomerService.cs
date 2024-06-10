@@ -14,7 +14,7 @@ namespace ProjMongoDBAPI.Services
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);
 
-            _customers = database.GetCollection<Customer>(settings.ClientCollectionName);
+            _customers = database.GetCollection<Customer>(settings.CustomerCollectionName);
         }
         public List<Customer> GetAll() =>
             _customers.Find(customer => true).ToList();
@@ -27,5 +27,10 @@ namespace ProjMongoDBAPI.Services
             _customers.InsertOne(customer);
             return customer;
         }
+        public Customer Update(Customer customer) 
+        { _customers.ReplaceOne(c => c.Id == customer.Id, customer); 
+            return customer; 
+        }
+
     }
 }
